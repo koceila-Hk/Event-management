@@ -8,6 +8,7 @@ const EventForm = () => {
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     const [location, setLocation] = useState('');
+    const [error, setError] = useState(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -15,8 +16,10 @@ const EventForm = () => {
         try {
             const response = await axios.post('http://localhost:8000/api/events/new', newEvent, { withCredentials: true });
             console.log(response.data);
+            // Optionnel : Réinitialiser le formulaire ou rediriger l'utilisateur
         } catch (error) {
             console.error('Error creating event:', error.response ? error.response.data : error.message);
+            setError('Failed to create event. Please try again.');
         }
     };
 
@@ -28,6 +31,7 @@ const EventForm = () => {
             <input type="time" value={time} onChange={(e) => setTime(e.target.value)} required />
             <input type="text" placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} required />
             <button type="submit">Create Event</button>
+            {error && <p className="error">{error}</p>}
         </form>
     );
 };

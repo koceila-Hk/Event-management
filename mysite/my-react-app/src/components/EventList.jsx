@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../App';
-import '../EventList.css'
+import '../EventList.css';
 import { Link } from 'react-router-dom';
 
 const EventList = () => {
@@ -11,9 +11,7 @@ const EventList = () => {
     useEffect(() => {
         const fetchEvents = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/events/',{ withCredentials: true });
-                console.log(response.data);
-                
+                const response = await axios.get('http://localhost:8000/api/events/', { withCredentials: true });
                 setEvents(response.data);
             } catch (error) {
                 console.error('Error fetching events', error);
@@ -25,7 +23,6 @@ const EventList = () => {
     return (
         <div>
             <h1>Events</h1>
-            <button onClick={logout}>Logout</button>
             <ul>
                 {events.map(event => (
                     <li key={event.id}>

@@ -28,14 +28,22 @@ class SignInView(View):
         data = json.loads(request.body)
         username = data.get('username')
         password = data.get('password')
+        
         if not username or not password:
             return JsonResponse({'error': 'Username and password are required'}, status=400)
         
         user = authenticate(username=username, password=password)
         if user:
             login(request, user)
-            return JsonResponse({'message': 'User authenticated successfully'}, status=200)
+            # Construire les informations utilisateur directement
+            user_data = {
+                'id': user.id,
+                'username': user.username,
+            }
+            return JsonResponse({'message': 'User authenticated successfully', 'user':user_data}, status=200)
+        
         return JsonResponse({'error': 'Invalid credentials'}, status=400)
+
 
 class SignOutView(View):
     def get(self, request):
@@ -54,7 +62,8 @@ class EventCreateView(View):
             description=data.get('description'),
             date=data.get('date'),
             time=data.get('time'),
-            location=data.get('location')
+            location=data.get('location'),
+            creator=request.user  # Assign the creator here
         )
         return JsonResponse({'message': 'Event created successfully'}, status=201)
 
@@ -81,7 +90,8 @@ class EventDetailView(View):
                 'description': event.description,
                 'date': event.date,
                 'time': event.time,
-                'location': event.location
+                'location': event.location,
+                'creator': event.creator.username  # Include creator information
             }
             return JsonResponse(event_data)
         except Event.DoesNotExist:
@@ -119,5 +129,50 @@ class ParticipantListView(View):
         if not event_id:
             return JsonResponse({'error': 'Event ID is required'}, status=400)
         
-        participants = list(Participant.objects.filter(event_id=event_id).values('id', 'user__username'))
-        return JsonResponse(participants, safe=False)
+        try:
+            participants = list(Participant.objects.filter(event_id=event_id).values('id', 'user__username'))
+            return JsonResponse(participants, safe=False)
+        except Event.DoesNotExist:
+            return JsonResponse({'error': 'Event not found'}, status=404)
+
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class EventUpdateView(View):
+    def patch(self, request, id):
+        if not request.user.is_authenticated:
+            return JsonResponse({'error': 'Not authenticated'}, status=403)
+
+        try:
+            event = Event.objects.get(id=id)
+        except Event.DoesNotExist:
+            return JsonResponse({'error': 'Event not found'}, status=404)
+
+        if event.creator != request.user:
+            return JsonResponse({'error': 'Permission denied'}, status=403)
+
+        data = json.loads(request.body)
+        event.title = data.get('title', event.title)
+        event.description = data.get('description', event.description)
+        event.date = data.get('date', event.date)
+        event.time = data.get('time', event.time)
+        event.location = data.get('location', event.location)
+        event.save()
+        return JsonResponse({'message': 'Event updated successfully'}, status=200)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class EventDeleteView(View):
+    def delete(self, request, id):
+        if not request.user.is_authenticated:
+            return JsonResponse({'error': 'Not authenticated'}, status=403)
+
+        try:
+            event = Event.objects.get(id=id)
+        except Event.DoesNotExist:
+            return JsonResponse({'error': 'Event not found'}, status=404)
+
+        if event.creator != request.user:
+            return JsonResponse({'error': 'Permission denied'}, status=403)
+
+        event.delete()
+        return JsonResponse({'message': 'Event deleted successfully'}, status=200)
