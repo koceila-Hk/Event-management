@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import '../EventForm.css'
+import '../EventForm.css';
 
-const EventForm = ({ onEventCreated }) => {
+const EventForm = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [date, setDate] = useState('');
@@ -12,8 +12,12 @@ const EventForm = ({ onEventCreated }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const newEvent = { title, description, date, time, location };
-        const response = await axios.post('http://localhost:8000/api/events/new', newEvent);
-        console.log(response.data);
+        try {
+            const response = await axios.post('http://localhost:8000/api/events/new', newEvent, { withCredentials: true });
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error creating event:', error.response ? error.response.data : error.message);
+        }
     };
 
     return (

@@ -1,22 +1,19 @@
 from django.db import models
-
-# Create your models here.
-from django.db import models
+from django.contrib.auth.models import User
 
 class Event(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=100)
     description = models.TextField()
     date = models.DateField()
     time = models.TimeField()
-    location = models.CharField(max_length=255)
+    location = models.CharField(max_length=100)
 
     def __str__(self):
         return self.title
 
 class Participant(models.Model):
-    name = models.CharField(max_length=255)
-    email = models.EmailField()
-    event = models.ForeignKey(Event, related_name='participants', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.name} ({self.email})"
+        return f"{self.user.username} - {self.event.title}"

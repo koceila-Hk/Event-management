@@ -74,8 +74,9 @@ TEMPLATES = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # URL de votre frontend React
+    "http://localhost:5173", 
 ]
+CORS_ALLOW_CREDENTIALS = True
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 

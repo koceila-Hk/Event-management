@@ -1,21 +1,123 @@
-# from django.shortcuts import render
-
-# Create your views here.
-from rest_framework import viewsets
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.models import User
+from django.http import JsonResponse
+from django.views import View
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from .models import Event, Participant
-from .serializers import EventSerializer, ParticipantSerializer
-from django.shortcuts import render
-# from django.views.generic import View
+import json
 
-class EventViewSet(viewsets.ModelViewSet):
-    queryset = Event.objects.all()
-    serializer_class = EventSerializer
+@method_decorator(csrf_exempt, name='dispatch')
+class SignUpView(View):
+    def post(self, request):
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
+        if not username or not password:
+            return JsonResponse({'error': 'Username and password are required'}, status=400)
+        
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({'error': 'Username already exists'}, status=400)
+        
+        user = User.objects.create_user(username=username, password=password)
+        return JsonResponse({'message': 'User created successfully'}, status=201)
 
-class ParticipantViewSet(viewsets.ModelViewSet):
-    queryset = Participant.objects.all()
-    serializer_class = ParticipantSerializer
+@method_decorator(csrf_exempt, name='dispatch')
+class SignInView(View):
+    def post(self, request):
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
+        if not username or not password:
+            return JsonResponse({'error': 'Username and password are required'}, status=400)
+        
+        user = authenticate(username=username, password=password)
+        if user:
+            login(request, user)
+            return JsonResponse({'message': 'User authenticated successfully'}, status=200)
+        return JsonResponse({'error': 'Invalid credentials'}, status=400)
 
+class SignOutView(View):
+    def get(self, request):
+        logout(request)
+        return JsonResponse({'message': 'User logged out successfully'}, status=200)
 
-# class FrontendAppView(View):
-#     def get(self, request, *args, **kwargs):
-#         return render(request, 'my-react-app/dist/index.html')
+@method_decorator(csrf_exempt, name='dispatch')
+class EventCreateView(View):
+    def post(self, request):
+        if not request.user.is_authenticated:
+            return JsonResponse({'error': 'Not authenticated'}, status=403)
+        
+        data = json.loads(request.body)
+        event = Event.objects.create(
+            title=data.get('title'),
+            description=data.get('description'),
+            date=data.get('date'),
+            time=data.get('time'),
+            location=data.get('location')
+        )
+        return JsonResponse({'message': 'Event created successfully'}, status=201)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class EventListView(View):
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return JsonResponse({'error': 'Not authenticated'}, status=403)
+        
+        events = list(Event.objects.values())
+        return JsonResponse(events, safe=False)
+    
+@method_decorator(csrf_exempt, name='dispatch')
+class EventDetailView(View):
+    def get(self, request, id):
+        if not request.user.is_authenticated:
+            return JsonResponse({'error': 'Not authenticated'}, status=403)
+        
+        try:
+            event = Event.objects.get(id=id)
+            event_data = {
+                'id': event.id,
+                'title': event.title,
+                'description': event.description,
+                'date': event.date,
+                'time': event.time,
+                'location': event.location
+            }
+            return JsonResponse(event_data)
+        except Event.DoesNotExist:
+            return JsonResponse({'error': 'Event not found'}, status=404)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class ParticipantCreateView(View):
+    def post(self, request):
+        if not request.user.is_authenticated:
+            return JsonResponse({'error': 'Not authenticated'}, status=403)
+
+        data = json.loads(request.body)
+        event_id = data.get('event')
+        
+        if not event_id:
+            return JsonResponse({'error': 'Event ID is required'}, status=400)
+
+        try:
+            event = Event.objects.get(id=event_id)
+            participant, created = Participant.objects.get_or_create(user=request.user, event=event)
+            if created:
+                return JsonResponse({'message': 'Participation successful'}, status=201)
+            else:
+                return JsonResponse({'message': 'Already participating'}, status=200)
+        except Event.DoesNotExist:
+            return JsonResponse({'error': 'Event not found'}, status=404)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class ParticipantListView(View):
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return JsonResponse({'error': 'Not authenticated'}, status=403)
+        
+        event_id = request.GET.get('event')
+        if not event_id:
+            return JsonResponse({'error': 'Event ID is required'}, status=400)
+        
+        participants = list(Participant.objects.filter(event_id=event_id).values('id', 'user__username'))
+        return JsonResponse(participants, safe=False)
