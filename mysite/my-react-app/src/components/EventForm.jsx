@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import '../EventForm.css';
 
 const EventForm = () => {
     const [title, setTitle] = useState('');
@@ -9,6 +9,7 @@ const EventForm = () => {
     const [time, setTime] = useState('');
     const [location, setLocation] = useState('');
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -16,7 +17,7 @@ const EventForm = () => {
         try {
             const response = await axios.post('http://localhost:8000/api/events/new', newEvent, { withCredentials: true });
             console.log(response.data);
-            // Optionnel : Réinitialiser le formulaire ou rediriger l'utilisateur
+            navigate('/events');
         } catch (error) {
             console.error('Error creating event:', error.response ? error.response.data : error.message);
             setError('Failed to create event. Please try again.');

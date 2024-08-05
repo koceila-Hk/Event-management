@@ -1,42 +1,138 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/* styles.css */
+* {
+  text-decoration: none;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+/* Global Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1, h2, p {
+  margin: 0.5em 0;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.5em 1em;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 0.5em;
+  margin: 0.5em 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+label {
+  display: block;
+  margin-top: 1em;
+}
+
+/* EventForm Styles */
+form {
+  max-width: 600px;
+  margin: 2em auto;
+  padding: 2em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.error {
+  color: red;
+}
+
+/* EventDetail Styles */
+.participants-list {
+  padding: 10;
+}
+
+.participants-list li {
+  margin: 1em 0;
+}
+
+.event-buttons {
+  display: flex;
+  gap: 1em;
+  margin-top: 1em;
+}
+
+/* EventList Styles */
+.event-list {
+  max-width: 600px;
+  margin: 2em auto;
+  padding: 2em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.event-list ul {
+  padding: 5;
+}
+
+.event-list li {
+  margin: 0.5em 0;
+}
+
+.event-list li a {
+  color: black;
+}
+
+/* Layout Styles */
+.home {
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+
+nav {
+  background-color: black;
+  padding: 25px 5px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+nav ul {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+nav ul li {
+  margin: 0;
 }
 
-.card {
-  padding: 2em;
+nav a {
+  text-decoration: none;
+  color: #ffffff;
 }
 
-.read-the-docs {
-  color: #888;
+nav span {
+  color: #dedede;
+}
+
+nav a:hover {
+  color: #0056b3;
+}
+
+main {
+  padding: 1em;
+}
+
+/* NoPage Styles */
+.no-page {
+  text-align: center;
+  margin-top: 2em;
 }

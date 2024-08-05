@@ -20,7 +20,7 @@ const SignUp = () => {
 
   return (
     <div>
-      <h2>Sign Up</h2>
+      <h2>Remplissez le formulaire :</h2>
       <form onSubmit={handleSignUp}>
         <input
           type="text"
@@ -36,9 +36,9 @@ const SignUp = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Sign Up</button>
+        <button type="submit">S'enregistrer</button>
       </form>
-      <button onClick={()=>navigate('/signin')}>Sign in</button>
+      <button onClick={()=>navigate('/signin')}>Connexion</button>
     </div>
   );
 };

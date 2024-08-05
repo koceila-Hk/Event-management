@@ -1,31 +1,29 @@
-// Signin.jsx
+// src/Auth/Signin.jsx
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../App';
+import { AuthContext } from './AuthContext';
 
 const Signin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { setIsAuthenticated, setCurrentUser } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:8000/api/signin/', { username, password }, { withCredentials: true });
-      console.log("Login response:", response.data);
-      setIsAuthenticated(true);
-      setCurrentUser(response.data.user); // Assurez-vous que les données utilisateur sont renvoyées et mises à jour
+      login(response.data.user); 
       navigate('/events');
     } catch (error) {
-      console.error('Login failed', error.response.data);
+      console.error('Login failed', error);
     }
   };
 
   return (
     <div>
-      <h2>Login</h2>
+      <h2>Identifiez vous :</h2>
       <form onSubmit={handleLogin}>
         <input
           type="text"
@@ -41,9 +39,9 @@ const Signin = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Login</button>
+        <button type="submit">Connexion</button>
       </form>
-      <button onClick={() => navigate('/signup')}>Sign up</button>
+      <button onClick={() => navigate('/signup')}>S'enregistrer</button>
     </div>
   );
 };

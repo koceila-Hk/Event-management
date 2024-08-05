@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import Event, Participant
 import json
 
+##### class SignUp
 @method_decorator(csrf_exempt, name='dispatch')
 class SignUpView(View):
     def post(self, request):
@@ -22,6 +23,8 @@ class SignUpView(View):
         user = User.objects.create_user(username=username, password=password)
         return JsonResponse({'message': 'User created successfully'}, status=201)
 
+
+
 @method_decorator(csrf_exempt, name='dispatch')
 class SignInView(View):
     def post(self, request):
@@ -35,12 +38,8 @@ class SignInView(View):
         user = authenticate(username=username, password=password)
         if user:
             login(request, user)
-            # Construire les informations utilisateur directement
-            user_data = {
-                'id': user.id,
-                'username': user.username,
-            }
-            return JsonResponse({'message': 'User authenticated successfully', 'user':user_data}, status=200)
+            print(user.username)
+            return JsonResponse({'message': 'User authenticated successfully', 'user':user.username}, status=200)
         
         return JsonResponse({'error': 'Invalid credentials'}, status=400)
 
@@ -63,25 +62,22 @@ class EventCreateView(View):
             date=data.get('date'),
             time=data.get('time'),
             location=data.get('location'),
-            creator=request.user  # Assign the creator here
+            creator=request.user 
         )
         return JsonResponse({'message': 'Event created successfully'}, status=201)
 
 @method_decorator(csrf_exempt, name='dispatch')
 class EventListView(View):
-    def get(self, request):
-        if not request.user.is_authenticated:
-            return JsonResponse({'error': 'Not authenticated'}, status=403)
+    def get(self):
         
         events = list(Event.objects.values())
         return JsonResponse(events, safe=False)
     
+
+
 @method_decorator(csrf_exempt, name='dispatch')
 class EventDetailView(View):
     def get(self, request, id):
-        if not request.user.is_authenticated:
-            return JsonResponse({'error': 'Not authenticated'}, status=403)
-        
         try:
             event = Event.objects.get(id=id)
             event_data = {
@@ -91,7 +87,7 @@ class EventDetailView(View):
                 'date': event.date,
                 'time': event.time,
                 'location': event.location,
-                'creator': event.creator.username  # Include creator information
+                'creator': event.creator.username 
             }
             return JsonResponse(event_data)
         except Event.DoesNotExist:
@@ -122,8 +118,6 @@ class ParticipantCreateView(View):
 @method_decorator(csrf_exempt, name='dispatch')
 class ParticipantListView(View):
     def get(self, request):
-        if not request.user.is_authenticated:
-            return JsonResponse({'error': 'Not authenticated'}, status=403)
         
         event_id = request.GET.get('event')
         if not event_id:

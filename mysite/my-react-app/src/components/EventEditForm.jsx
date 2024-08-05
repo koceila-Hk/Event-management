@@ -21,7 +21,7 @@ const EventEditForm = ({ eventId, currentEventData, onUpdate, onCancel }) => {
                 formData,
                 { withCredentials: true }
             );
-            onUpdate(); // Notify parent component of the update
+            onUpdate(); 
         } catch (error) {
             console.error('Error updating event', error);
         }

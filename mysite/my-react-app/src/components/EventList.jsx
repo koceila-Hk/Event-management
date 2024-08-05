@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import { AuthContext } from '../App';
-import '../EventList.css';
 import { Link } from 'react-router-dom';
 
 const EventList = () => {
     const [events, setEvents] = useState([]);
-    const { logout } = useContext(AuthContext);
 
     useEffect(() => {
         const fetchEvents = async () => {
@@ -22,8 +19,8 @@ const EventList = () => {
 
     return (
         <div>
-            <h1>Events</h1>
-            <ul>
+            <h1>Liste des événements à venir</h1>
+            <ul className='event-list'>
                 {events.map(event => (
                     <li key={event.id}>
                         <Link to={`/events/${event.id}`}>{event.title}</Link>
