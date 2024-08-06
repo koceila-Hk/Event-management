@@ -16,6 +16,7 @@ const EventDetail = () => {
     const fetchEvent = async () => {
         try {
             const response = await axios.get(`http://localhost:8000/api/events/${id}/`, { withCredentials: true });
+            
             setEvent(response.data);
         } catch (error) {
             console.error('Error fetching event', error);
@@ -71,7 +72,7 @@ const EventDetail = () => {
     };
 
     return (
-        <div>
+        <div className='event-detail'>
             <h1>Event Details</h1>
             {event ? (
                 <>
@@ -84,11 +85,11 @@ const EventDetail = () => {
                         />
                     ) : (
                         <> 
-                            <h2>{event.title}</h2>
-                            <p>{event.description}</p>
+                            <h2>Titre: {event.title}</h2>
+                            <p>Description: {event.description}</p>
                             <p>Date: {event.date}</p>
-                            <p>Time: {event.time}</p>
-                            <p>Location: {event.location}</p>
+                            <p>Heure: {event.time}</p>
+                            <p>Lieu: {event.location}</p>
 
                             <button onClick={handleParticipate}>Participate</button>
                             <p style={{color: 'red'}}>{loginMessage}</p>
@@ -107,7 +108,7 @@ const EventDetail = () => {
                             )}
 
                             <h3>Participants</h3>
-                            <ul participants-list>
+                            <ul>
                                 {participants.map(participant => (
                                     <li key={participant.id}>{participant.user__username}</li>
                                 ))}

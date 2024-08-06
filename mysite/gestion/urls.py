@@ -1,17 +1,17 @@
 # urls.py
 from django.urls import path
-from .views import SignUpView, SignInView, SignOutView, EventCreateView, EventListView, EventDetailView, ParticipantCreateView, ParticipantListView, EventUpdateView, EventDeleteView
+from .views import SignUp, SignIn, SignOut, EventCreate, EventList, EventDetail, ParticipantCreate, ParticipantList, EventUpdate, EventDelete
 
 urlpatterns = [
-    path('signup/', SignUpView.as_view()),
-    path('signin/', SignInView.as_view()),
-    path('signout/', SignOutView.as_view(), name='sign_out'),
-    path('events/new', EventCreateView.as_view(), name='events'),
-    path('events/', EventListView.as_view(),),
-    path('events/<int:id>/', EventDetailView.as_view(),),
-    path('events/<int:id>/update/', EventUpdateView.as_view(), name='event_update'),
-    path('events/<int:id>/delete/', EventDeleteView.as_view(), name='event_delete'),
-    path('participants/', ParticipantListView.as_view(), name='participant_viewList'),
-    path('participant/', ParticipantCreateView.as_view(), name='participant_create'),
+    path('signup/', SignUp.as_view()),
+    path('signin/', SignIn.as_view()),
+    path('signout/', SignOut.as_view(), name='sign_out'),
+    path('events/new', EventCreate.as_view(), name='events'),
+    path('events/', EventList.as_view(),),
+    path('events/<int:id>/', EventDetail.as_view(),),
+    path('events/<int:id>/update/', EventUpdate.as_view(), name='event_update'),
+    path('events/<int:id>/delete/', EventDelete.as_view(), name='event_delete'),
+    path('participants/', ParticipantList.as_view(), name='participant_viewList'),
+    path('participant/', ParticipantCreate.as_view(), name='participant_create'),
 
 ]

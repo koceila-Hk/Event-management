@@ -1,20 +1,25 @@
-// src/pages/Layout.jsx
 import React, { useContext } from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../Auth/AuthContext';
-import '../App.css';
+import '../assets/css/Home.css'
 
 const Layout = () => {
     const { isAuthenticated, currentUser, logout } = useContext(AuthContext);
+    const location = useLocation();
 
     const handleLogout = () => {
         logout();
     };
 
+    const homePage = location.pathname === '/'
+
     return (
-        <div className='home'>
-            <nav>
+        <div>
+            <nav className='nav-bar'>
                 <ul>
+                    <li>
+                        <Link to="/">Accueil</Link>
+                    </li>
                     <li>
                         <Link to="/events">Liste des événements</Link>
                     </li>
@@ -43,7 +48,7 @@ const Layout = () => {
                 </ul>
             </nav>
 
-            <main>
+            <main className={homePage? 'home-main' : ''}>
                 <Outlet />
             </main>
         </div>

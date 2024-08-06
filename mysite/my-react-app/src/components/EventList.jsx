@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
@@ -6,15 +6,14 @@ const EventList = () => {
     const [events, setEvents] = useState([]);
 
     useEffect(() => {
-        const fetchEvents = async () => {
+        (async () => {
             try {
                 const response = await axios.get('http://localhost:8000/api/events/', { withCredentials: true });
                 setEvents(response.data);
             } catch (error) {
                 console.error('Error fetching events', error);
             }
-        };
-        fetchEvents();
+     })();
     }, []);
 
     return (
@@ -23,7 +22,7 @@ const EventList = () => {
             <ul className='event-list'>
                 {events.map(event => (
                     <li key={event.id}>
-                        <Link to={`/events/${event.id}`}>{event.title}</Link>
+                        <Link to={`/events/${event.id}`}>{event.title} {event.date}</Link>
                     </li>
                 ))}
             </ul>
