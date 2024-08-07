@@ -14,13 +14,13 @@
     padding: 1rem 2rem;
     font-size: 1.5rem;
     color: white;
-    background-color: #007bff;
+    background-color: rgba(93, 115, 156, 0.491);
     border: none;
     border-radius: 5px;
     cursor: pointer;
   }
   
   .event-button:hover {
-    background-color: #0056b3;
+    background-color: rgba(93, 115, 156, 0.664);
   }
   

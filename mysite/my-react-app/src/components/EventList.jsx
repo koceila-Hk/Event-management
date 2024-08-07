@@ -1,9 +1,10 @@
 import React, { useState, useEffect} from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const EventList = () => {
     const [events, setEvents] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         (async () => {
@@ -16,13 +17,26 @@ const EventList = () => {
      })();
     }, []);
 
+
+    const handleButton = (id) => {
+        navigate(`/events/${id}`);
+    };
+
+
+
     return (
         <div>
             <h1>Liste des événements à venir</h1>
             <ul className='event-list'>
                 {events.map(event => (
                     <li key={event.id}>
-                        <Link to={`/events/${event.id}`}>{event.title} {event.date}</Link>
+                        <button type='button' onClick={() => handleButton(event.id)} 
+                        className='button-list'>
+                            {event.title}
+                            <div className='list-date'>
+                                {event.date}
+                            </div>
+                            </button>
                     </li>
                 ))}
             </ul>

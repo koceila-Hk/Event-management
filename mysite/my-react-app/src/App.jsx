@@ -10,6 +10,7 @@ import Logout from './Auth/Logout';
 import EventList from './components/EventList';
 import EventForm from './components/EventForm';
 import EventDetail from './components/EventDetail';
+import EventEditForm from './components/EventEditForm';
 import PrivateRoute from './components/PrivateRoute';
 
 
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="events" element={<EventList />} />
           <Route path="events/new" element={<PrivateRoute><EventForm /></PrivateRoute>} />
           <Route path="events/:id" element={<EventDetail />} />
+          <Route path="events/:id/edit" element={<EventEditForm />} />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>

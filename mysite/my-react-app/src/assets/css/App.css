@@ -15,18 +15,25 @@ body {
 
 h1, h2, p {
   margin: 0.5em 0;
+  color: #223345;
 }
 
 button {
   background-color: #007bff;
   color: white;
-  border: none;
+  border-radius: 20px;
   padding: 0.5em 1em;
   cursor: pointer;
 }
 
 button:hover {
   background-color: #0056b3;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
 }
 
 input, textarea {
@@ -44,12 +51,12 @@ label {
 
 /* EventForm Styles */
 form {
+  background-color: #f9f9f9;
   max-width: 600px;
   margin: 2em auto;
   padding: 2em;
   border: 1px solid #ccc;
   border-radius: 4px;
-  background-color: #f9f9f9;
 }
 
 .error {
@@ -83,26 +90,35 @@ form {
   background-color: #f9f9f9;
 }
 
-.event-list ul {
-  padding: 5;
-}
-
 .event-list li {
-  margin: 0.5em 0;
+  display: flex;
+  justify-content: center;
+  margin: 1em 0;
 }
 
-.event-list li a {
-  color: black;
+.button-list {
+  display: flex;
+  justify-content: space-between;
+  background-color: #EAF1F5;
+  width: 80%;
+}
+
+
+.button-list:hover {
+  background-color: #F5F8F9;
+}
+button.button-list {
+  color: #3B4A5A;
 }
 
 /* Layout Styles */
+
 .nav-bar {
   text-align: center;
 }
 
-
 nav {
-  background-color: black;
+  background-color: #292F42;
   padding: 25px 5px;
 }
 
@@ -118,7 +134,7 @@ nav ul li {
 
 nav a {
   text-decoration: none;
-  color: #ffffff;
+  color: #ECECED;
 }
 
 nav span {

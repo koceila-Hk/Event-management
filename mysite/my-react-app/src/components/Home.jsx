@@ -12,9 +12,7 @@ const Home = () => {
   return (
     <div className="home-container">
       <div className="background">
-        <button className="event-button" onClick={goToEventList}>
-          Event List
-        </button>
+        <button className="event-button" onClick={goToEventList}>Liste des événements</button>
       </div>
     </div>
   );
