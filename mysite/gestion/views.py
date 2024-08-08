@@ -9,7 +9,7 @@ import json
 
 
 ##### class SignUp
-@method_decorator(csrf_exempt, name='dispatch')
+# @method_decorator(csrf_exempt, name='dispatch')
 class SignUp(View):
     def post(self, request):
         data = json.loads(request.body)
@@ -56,7 +56,7 @@ class SignOut(View):
 class EventCreate(View):
     def post(self, request):
         if not request.user.is_authenticated:
-            return JsonResponse({'error': 'Not authenticated'}, status=403)
+            return JsonResponse({'error': 'Non authentifié'}, status=403)
         
         data = json.loads(request.body)
         event = Event.objects.create(
@@ -67,7 +67,7 @@ class EventCreate(View):
             location=data.get('location'),
             creator=request.user 
         )
-        return JsonResponse({'message': 'Event created successfully'}, status=201)
+        return JsonResponse({'message': 'Event crée avec succés'}, status=201)
 
 
 ##### class EventList
@@ -101,7 +101,7 @@ class EventDetail(View):
             print(event_data)
             return JsonResponse(event_data)
         except Event.DoesNotExist:
-            return JsonResponse({'error': 'Event not found'}, status=404)
+            return JsonResponse({'error': 'Event non trouvé'}, status=404)
 
 
 ##### class ParticipantCreate
@@ -109,7 +109,7 @@ class EventDetail(View):
 class ParticipantCreate(View):
     def post(self, request):
         if not request.user.is_authenticated:
-            return JsonResponse({'error': 'Not authenticated'}, status=403)
+            return JsonResponse({'error': 'Non authentifié'}, status=403)
 
         data = json.loads(request.body)
         event_id = data.get('event')
@@ -118,14 +118,14 @@ class ParticipantCreate(View):
             return JsonResponse({'error': 'Event ID is required'}, status=400)
 
         try:
-            event = Event.objects.get(id=event_id)
-            participant, created = Participant.objects.get_or_create(user=request.user, event=event)
+            event = Event.objects.get(id = event_id)
+            participant, created = Participant.objects.get_or_create(user = request.user, event = event)
             if created:
-                return JsonResponse({'message': 'Participation successful'}, status=201)
+                return JsonResponse({'message': 'participation enregistré'}, status=201)
             else:
-                return JsonResponse({'message': 'Already participating'}, status=200)
+                return JsonResponse({'message': 'Déjà participant'}, status=200)
         except Event.DoesNotExist:
-            return JsonResponse({'error': 'Event not found'}, status=404)
+            return JsonResponse({'error': 'Event non trouvé'}, status=404)
 
 
 ##### class ParticipantList
@@ -141,7 +141,7 @@ class ParticipantList(View):
             participants = list(Participant.objects.filter(event_id=event_id).values('id', 'user__username'))
             return JsonResponse(participants, safe=False)
         except Event.DoesNotExist:
-            return JsonResponse({'error': 'Event not found'}, status=404)
+            return JsonResponse({'error': 'Event non trouvé'}, status=404)
 
 
 ##### class EvnetUpdate
@@ -169,7 +169,7 @@ class EventUpdate(View):
         return JsonResponse({'message': 'Event updated successfully'}, status=200)
 
 
-###### EventDelete
+###### class EventDelete
 @method_decorator(csrf_exempt, name='dispatch')
 class EventDelete(View):
     def delete(self, request, id):

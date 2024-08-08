@@ -138,13 +138,14 @@ const EventDetail = () => {
     const [event, setEvent] = useState(null);
     const [participants, setParticipants] = useState([]);
     const [loginMessage, setLoginMessage] = useState('');
+    const [isParticipante, setIsParticipate]  = useState('');
 
     const fetchEvent = async () => {
         try {
             const response = await axios.get(`http://localhost:8000/api/events/${id}/`);
             setEvent(response.data);
         } catch (error) {
-            console.error('Error fetching event details', error);
+            console.error('Erreur lors de la récupération détail', error);
         }
     };
 
@@ -156,7 +157,7 @@ const EventDetail = () => {
             const response = await axios.get(`http://localhost:8000/api/participants/?event=${id}`);
             setParticipants(response.data);
         } catch (error) {
-            console.error('Error fetching participants', error);
+            console.error('Erreur lors de la récupération des participants', error);
         }
     };
     
@@ -172,10 +173,11 @@ const EventDetail = () => {
             return;
         }
         try {
-            await axios.post(`http://localhost:8000/api/participant/`,  { event: id},{ withCredentials: true });
+            const response = await axios.post(`http://localhost:8000/api/participant/`,  { event: id},{ withCredentials: true });
+            setIsParticipate(response.data.message);
             fetchParticipants();
         } catch (error) {
-            console.error('Error participating in event', error);
+            console.error('Erreur à la participation event', error);
         }
     };
 
@@ -184,7 +186,7 @@ const EventDetail = () => {
             await axios.delete(`http://localhost:8000/api/events/${id}/delete/`, {withCredentials:true});
             navigate('/events');
         } catch (error) {
-            console.error('Error deleting event', error);
+            console.error('Erreur delete', error);
         }
     };
 
@@ -194,40 +196,49 @@ const EventDetail = () => {
 
     return (
         <div className='event-detail'>
-            <h1>Event Details</h1>
+            <h1>Détails de l'événement</h1>
             {event ? (
-                <>
-                    <h2>Titre: {event.title}</h2>
-                    <p>Description: {event.description}</p>
-                    <p>Date: {event.date}</p>
-                    <p>Heure: {event.time}</p>
-                    <p>Lieu: {event.location}</p>
-
-                    <button onClick={handleParticipate}>Participate</button>
-                    <p style={{color: 'red'}}>{loginMessage}</p>
-                    
-                    {currentUser && (
-                        <>
-                            {event.creator === currentUser ? ( 
-                                <>
-                                    <button onClick={handleEdit}>Edit Event</button>
-                                    <button onClick={handleDelete}>Delete Event</button>
-                                </>
-                            ) : (
-                                <p>You do not have permission to edit or delete this event.</p>
-                            )}
-                        </>
+                <div>
+                    <table>
+                        <tr>
+                            <th>Titre</th>
+                            <th>Description</th>
+                            <th>Date</th>
+                            <th>Heure</th>
+                            <th>Lieu</th>
+                        </tr>
+                        <tr>
+                            <td>{event.title}</td>
+                            <td>{event.description}</td>
+                            <td>{event.date}</td>
+                            <td>{event.time}</td>
+                            <td>{event.location}</td>
+                        </tr>
+                    </table>
+                    {event.creator !== currentUser && (
+                    <button onClick={handleParticipate}>Participer</button>
                     )}
+                    <p style={{color: 'red'}}>{loginMessage}</p>
+                    <p style={{color: 'green'}}>{isParticipante}</p>
+                    
+                    <div>
+                        {event.creator === currentUser && ( 
+                            <div>
+                                <button onClick={handleEdit}>Modifier l'événement</button>
+                                <button onClick={handleDelete}>Supprimer l'événement</button>
+                            </div>
+                        )}
+                    </div>
 
-                    <h3>Participants</h3>
+                    <h3>liste des participants</h3>
                     <ul>
                         {participants.map(participant => (
                             <li key={participant.id}>{participant.user__username}</li>
                         ))}
                     </ul>
-                </>
+                </div>
             ) : (
-                <p>Loading event details...</p>
+                <p>Chargement de détail...</p>
             )}
         </div>
     );

@@ -90,25 +90,17 @@ const EventEditForm = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { currentUser } = useContext(AuthContext);
-    const [event, setEvent] = useState({
-        title: '',
-        description: '',
-        date: '',
-        time: '',
-        location: ''
-    });
+    const [event, setEvent] = useState({title: '', description: '', date: '', time: '', location: ''});
 
     useEffect(() => {
-        const fetchEvent = async () => {
+        (async () => {
             try {
                 const response = await axios.get(`http://localhost:8000/api/events/${id}/`);
                 setEvent(response.data);
             } catch (error) {
-                console.error('Error fetching event details', error);
+                console.error('Erreur lors de la récupération détail', error);
             }
-        };
-
-        fetchEvent();
+        })();
     }, [id]);
 
     const handleChange = (e) => {
@@ -122,7 +114,7 @@ const EventEditForm = () => {
             await axios.patch(`http://localhost:8000/api/events/${id}/update/`, event, { withCredentials: true });
             navigate(`/events/${id}`);
         } catch (error) {
-            console.error('Error updating event', error);
+            console.error('Erreur de la modification event', error);
         }
     };
 

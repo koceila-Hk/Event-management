@@ -12,7 +12,7 @@ const EventList = () => {
                 const response = await axios.get('http://localhost:8000/api/events/', { withCredentials: true });
                 setEvents(response.data);
             } catch (error) {
-                console.error('Error fetching events', error);
+                console.error('Erreur lors de la récupération des events', error);
             }
      })();
     }, []);

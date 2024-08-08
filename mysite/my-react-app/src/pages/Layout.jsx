@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../Auth/AuthContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import '../assets/css/Home.css'
 
 const Layout = () => {
@@ -36,14 +38,14 @@ const Layout = () => {
                             </li>
                         </>
                     ) : (
-                        <>
+                        <div className='icon-signup-profil'>
                             <li>
-                                <Link to='/signout' onClick={handleLogout}>Se déconnecter</Link>
+                                <span>{currentUser} <FontAwesomeIcon icon={faUser} /></span>
                             </li>
                             <li>
-                                <span>Bienvenue, {currentUser}</span>
+                                <Link to='/signout' onClick={handleLogout}><FontAwesomeIcon icon={faRightFromBracket} /></Link>
                             </li>
-                        </>
+                        </div>
                     )}
                 </ul>
             </nav>
