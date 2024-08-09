@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../Auth/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,6 +7,7 @@ import '../assets/css/Home.css'
 
 const Layout = () => {
     const { isAuthenticated, currentUser, logout } = useContext(AuthContext);
+    const [menuOpen, setMenuOpen] = useState(false);
     const location = useLocation();
 
     const handleLogout = () => {
@@ -18,7 +19,11 @@ const Layout = () => {
     return (
         <div>
             <nav className='nav-bar'>
-                <ul>
+                <button 
+                className='burger-menu' onClick={() => setMenuOpen(!menuOpen)}>
+                    M
+                </button>
+                <ul className={menuOpen ? 'open': ''}>
                     <li>
                         <Link to="/">Accueil</Link>
                     </li>

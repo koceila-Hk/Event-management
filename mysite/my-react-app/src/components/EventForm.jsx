@@ -18,7 +18,7 @@ const EventForm = () => {
             console.log(response.data);
             navigate('/events');
         } catch (error) {
-            console.error('Error creating event:', error.response ? error.response.data : error.message);
+            console.error('Erreur lors de la création event:', error.response.data);
         }
     };
 

@@ -9,21 +9,19 @@ import json
 
 
 ##### class SignUp
-# @method_decorator(csrf_exempt, name='dispatch')
+@method_decorator(csrf_exempt, name='dispatch')
 class SignUp(View):
     def post(self, request):
         data = json.loads(request.body)
         username = data.get('username')
         email    = data.get('email')
         password = data.get('password')
-        if not username or not password:
-            return JsonResponse({'error': 'Username and password are required'}, status=400)
         
         if User.objects.filter(username=username).exists():
-            return JsonResponse({'error': 'Username already exists'}, status=400)
+            return JsonResponse({'error': 'Utilisateur déjà existant.'}, status=400)
         
         user = User.objects.create_user(username=username,email=email, password=password)
-        return JsonResponse({'message': 'User created successfully'}, status=201)
+        return JsonResponse({'message': 'Utilisateur créee avec succés'}, status=201)
 
 
 ##### class SignIn

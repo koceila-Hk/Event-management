@@ -5,6 +5,7 @@
   margin: 0;
   padding: 0;
 }
+
 /* Global Styles */
 body {
   font-family: Arial, sans-serif;
@@ -19,7 +20,7 @@ h1, h2, p {
 }
 
 button {
-  background-color: #007bff;
+  background-color: #5988BE;
   color: white;
   border-radius: 20px;
   padding: 0.5em 1em;
@@ -98,15 +99,16 @@ th, td {
 }
 
 th {
-  background-color: #f4f4f4;
+  color: #5988BE;
 }
 
-tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-tr:hover {
+tbody:hover {
   background-color: #f1f1f1;
+}
+
+.handle-btn-event {
+  display: flex;
+  justify-content: space-evenly;
 }
 
 
@@ -139,6 +141,7 @@ tr:hover {
 }
 button.button-list {
   color: #3B4A5A;
+  font-size: 1.2em;
 }
 
 /* Layout Styles */
@@ -172,11 +175,7 @@ nav span {
 }
 
 nav a:hover {
-  color: #aaacadda;
-}
-
-.icon-signup-profil {
-  display: flex;
+  color: #81C5EF;
 }
 
 .icon-signup-profil li a {
@@ -189,6 +188,13 @@ nav a:hover {
   right: 60px;
 }
 
+.burger-menu {
+  display: none;
+  position: absolute;
+  left: 30px;
+  top: 8px;
+}
+
 main {
   padding: 1em;
 }
@@ -197,4 +203,31 @@ main {
 .no-page {
   text-align: center;
   margin-top: 2em;
+}
+
+
+@media screen and (max-width: 800px) {
+  .nav-bar ul {
+    display: none;
+    flex-direction: column;
+  }
+
+  .nav-bar ul.open {
+    display: flex;
+  }
+
+  .burger-menu {
+    display: block;
+  }
+
+  .icon-signup-profil li a{
+    position: absolute;
+    top: 10px;
+  }
+
+  .icon-signup-profil li span{
+    position: absolute;
+    top: 21%;
+    left: 65px;
+  }
 }

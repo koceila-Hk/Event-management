@@ -6,18 +6,19 @@ const SignUp = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isUserCreated, setIsUserCreated] = useState('')
   const navigate = useNavigate();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/api/signup/', { username, password });
-      console.log(response.data);
+      const response = await axios.post('http://localhost:8000/api/signup/', { username, password }, {withCredentials:true});
       navigate('/Signin');
-    } catch (error) {
-      console.error('Sign Up failed', error.response.data);
-    }
-  };
+      } catch (error) {        
+          console.error('Sign Up failed', error.response.data);
+          setIsUserCreated(error.response.data.error);
+        }
+      };
 
   return (
     <div>
@@ -44,6 +45,7 @@ const SignUp = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
+        <p style={{color: 'red'}}>{isUserCreated}</p>
         <button type="submit">S'enregistrer</button>
       </form>
       <button onClick={()=>navigate('/signin')}>Connexion</button>

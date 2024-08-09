@@ -14,7 +14,7 @@ const EventList = () => {
             } catch (error) {
                 console.error('Erreur lors de la récupération des events', error);
             }
-     })();
+        })();
     }, []);
 
 
