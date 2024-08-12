@@ -10,10 +10,24 @@ const EventForm = () => {
     const [location, setLocation] = useState('');
     const navigate = useNavigate();
 
+    const getCoordinates = async (address) => {
+        const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json`, {
+            params: {
+                address: address,
+                key: 'AIzaSyCFIgPo6v-OIHmxvjFFQexTvGe0f7VBrxo'
+            }
+        });
+
+        const { lat, lng } = response.data.results[0].geometry.location;
+        return { latitude: lat, longitude: lng };
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const newEvent = { title, description, date, time, location };
+        
         try {
+            const coordinates = await getCoordinates(location);
+            const newEvent = { title, description, date, time, location, ...coordinates };
             const response = await axios.post('http://localhost:8000/api/events/new', newEvent, { withCredentials: true });
             console.log(response.data);
             navigate('/events');

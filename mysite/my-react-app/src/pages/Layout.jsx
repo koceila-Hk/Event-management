@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../Auth/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faRightFromBracket, faBars } from '@fortawesome/free-solid-svg-icons';
 import '../assets/css/Home.css'
 
 const Layout = () => {
@@ -21,7 +21,7 @@ const Layout = () => {
             <nav className='nav-bar'>
                 <button 
                 className='burger-menu' onClick={() => setMenuOpen(!menuOpen)}>
-                    M
+                    <FontAwesomeIcon icon={faBars} />
                 </button>
                 <ul className={menuOpen ? 'open': ''}>
                     <li>

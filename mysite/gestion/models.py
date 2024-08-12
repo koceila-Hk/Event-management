@@ -7,7 +7,10 @@ class Event(models.Model):
     date = models.DateField()
     time = models.TimeField()
     location = models.CharField(max_length=200)
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
+
 
     def __str__(self):
         return self.title

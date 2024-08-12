@@ -63,9 +63,12 @@ class EventCreate(View):
             date=data.get('date'),
             time=data.get('time'),
             location=data.get('location'),
+            latitude=data.get('latitude'),
+            longitude=data.get('longitude'),
             creator=request.user 
         )
         return JsonResponse({'message': 'Event crée avec succés'}, status=201)
+
 
 
 ##### class EventList
@@ -94,6 +97,8 @@ class EventDetail(View):
                 'date': event.date.strftime('%d-%m-%Y'),
                 'time': event.time,
                 'location': event.location,
+                'latitude': event.latitude,   
+                'longitude': event.longitude,
                 'creator': event.creator.username 
             }
             print(event_data)
