@@ -12,7 +12,6 @@ import EventForm from './components/EventForm';
 import EventDetail from './components/EventDetail';
 import EventEditForm from './components/EventEditForm';
 import PrivateRoute from './components/PrivateRoute';
-import MapComponent from './components/Map';
 
 
 const App = () => {

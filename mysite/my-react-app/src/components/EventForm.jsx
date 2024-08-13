@@ -8,6 +8,7 @@ const EventForm = () => {
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     const [location, setLocation] = useState('');
+    const [errorDate, setErrorDate] = useState('');
     const navigate = useNavigate();
 
     const getCoordinates = async (address) => {
@@ -24,6 +25,14 @@ const EventForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const eventDate = new Date(`${date}T${time}`);
+        const now = new Date();
+        
+        if (eventDate < now) {
+            setErrorDate("La date de l'événement ne peut pas être dans le passé.");
+            return;
+        }
         
         try {
             const coordinates = await getCoordinates(location);
@@ -44,6 +53,7 @@ const EventForm = () => {
             <input type="time" value={time} onChange={(e) => setTime(e.target.value)} required />
             <input type="text" placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} required />
             <button type="submit">Create Event</button>
+            {errorDate && <p style={{ color: 'red' }}>{errorDate}</p>}
         </form>
     );
 };
